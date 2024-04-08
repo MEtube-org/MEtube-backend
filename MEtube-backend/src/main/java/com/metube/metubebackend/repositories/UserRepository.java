@@ -7,6 +7,6 @@ import com.metube.metubebackend.entities.User;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository  extends MongoRepository<User, Long> {
-    Optional<User> findById(Long id);
+public interface UserRepository  extends MongoRepository<User, String> {
+    Optional<User> findById(String id);
 }
