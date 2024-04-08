@@ -1,2 +1,3 @@
 # MEtube-backend
-MEtube backend is meant to be an API for the user auth
+## MEtube backend is an API for MEtube user auth
+Swagger ui is available at [http://localhost:32500/swagger-ui/index.html](http://localhost:32500/swagger-ui/index.html)
