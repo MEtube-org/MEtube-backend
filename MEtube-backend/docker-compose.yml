@@ -1,5 +1,5 @@
 services:
-  metube-backend:
+  api:
     build:
       context: .
       dockerfile: Dockerfile
@@ -7,7 +7,7 @@ services:
       - 32500:32500
     environment:
       ENVIRONMENT_NAME: local
-      MONGODB_CONECTION_URL: mongodb://root:example@mongo:27017/
+      MONGODB_CONECTION_URL: mongodb://root:example@mongo:27017/metube
     restart: always
   mongo:
     image: mongo:5.0.2
