@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - 32500:32500
     environment:
       ENVIRONMENT_NAME: local
       MONGODB_CONECTION_URL: mongodb://root:example@mongo:27017/
