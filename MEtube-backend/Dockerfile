@@ -1,20 +1,12 @@
-FROM gradle:8.7.0-jdk17
+FROM gradle:8.7.0-jdk17 AS builder
 
 COPY . .
 
-RUN mkdir /build
+RUN ./gradlew clean build --no-daemon
 
-WORKDIR /build
-
-RUN ./gradlew clean build
-
-
-WORKDIR ..
 
 FROM openjdk:17
 
-ARG JAR_FILE=build/libs/*.jar
-
-COPY ${JAR_FILE} app.jar
+COPY --from=builder /home/gradle/build/libs/*.jar app.jar
 
 ENTRYPOINT ["java","-jar","/app.jar"]
