@@ -1,6 +1,14 @@
+volumes:
+  mongo_location:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${MONGO_LOCATION}
+      o: bind
+
 services:
   api:
-    image: ghcr.io/metube-org/metube-backend:main
+    image: ghcr.io/metube-org/metube-backend:nightly
     ports:
       - 32500:32500
     environment:
@@ -10,6 +18,8 @@ services:
   mongo:
     image: mongo:4.4.6
     restart: always
+    volumes:
+      - mongo_location:/data/db
     ports:
       - 27017:27017
     environment:
