@@ -60,12 +60,13 @@ public class UserService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserEntity> toUpdate = userRepository.findById(id);
 
-        // User with the given id doesn't exist
-        if(toUpdate.isEmpty())
-            throw new EntityNotFoundException("User");
-
-        // Can't update another user's password
         if (auth != null && auth.getPrincipal() instanceof UserDetails userDetails) {
+
+            // User with the given id doesn't exist
+            if(toUpdate.isEmpty())
+                throw new EntityNotFoundException("User");
+
+            // Can't update another user's password
             if(!Objects.equals(userDetails.getUsername(), toUpdate.get().getUsername()))
                 throw new ForbiddenException("User");
 
@@ -77,11 +78,24 @@ public class UserService {
             throw new BadRequestException();
     }
 
-    public void deleteUser(String id){
-        Optional<UserEntity> user = userRepository.findById(id);
-        if(user.isEmpty())
-            throw new EntityNotFoundException("User");
-        userRepository.deleteById(id);
+    public void deleteUser(String id) throws BadRequestException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<UserEntity> toUpdate = userRepository.findById(id);
+
+        if (auth != null && auth.getPrincipal() instanceof UserDetails userDetails) {
+
+            // User with the given id doesn't exist
+            if (toUpdate.isEmpty())
+                throw new EntityNotFoundException("User");
+
+            // Can't delete another user
+            if (!Objects.equals(userDetails.getUsername(), toUpdate.get().getUsername()))
+                throw new ForbiddenException("User");
+
+            userRepository.deleteById(id);
+        }
+        else
+            throw new BadRequestException();
     }
 
 }

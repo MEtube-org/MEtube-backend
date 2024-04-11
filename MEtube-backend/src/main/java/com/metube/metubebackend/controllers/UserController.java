@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @DeleteMapping("/user/{id}")
-    public void deleteUser(@PathVariable String id){
+    public void deleteUser(@PathVariable String id) throws BadRequestException {
         userService.deleteUser(id);
     }
 
