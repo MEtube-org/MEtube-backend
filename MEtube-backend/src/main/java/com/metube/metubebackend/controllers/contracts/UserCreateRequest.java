@@ -1,6 +1,6 @@
 package com.metube.metubebackend.controllers.contracts;
 
-import com.metube.metubebackend.entities.User;
+import com.metube.metubebackend.entities.UserEntity;
 import lombok.Getter;
 import org.springframework.beans.BeanUtils;
 
@@ -8,10 +8,10 @@ import org.springframework.beans.BeanUtils;
 public class UserCreateRequest {
     private String password;
     private String username;
-
-    public User toUser(){
-        User user = new User();
-        BeanUtils.copyProperties(this, user);
-        return user;
+    private String roles;
+    public UserEntity toUser(){
+        UserEntity userEntity = new UserEntity();
+        BeanUtils.copyProperties(this, userEntity);
+        return userEntity;
     }
 }

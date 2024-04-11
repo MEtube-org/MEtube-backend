@@ -10,10 +10,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Builder
 @Document(collection="user")
-public class User {
+public class UserEntity {
 
     @Id
     private String id;
-    private String password; // Will be stored encrypted;
+    private String password;
     private String username;
+    private String roles;
 }
