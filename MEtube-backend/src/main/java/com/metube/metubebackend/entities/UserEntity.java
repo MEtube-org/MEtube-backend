@@ -16,5 +16,6 @@ public class UserEntity {
     private String id;
     private String password;
     private String username;
+    @Builder.Default
     private String roles = "USER";
 }
