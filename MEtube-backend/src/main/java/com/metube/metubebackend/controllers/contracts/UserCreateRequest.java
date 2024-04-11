@@ -6,9 +6,8 @@ import org.springframework.beans.BeanUtils;
 
 @Getter
 public class UserCreateRequest {
-    private String password;
     private String username;
-    private String roles;
+    private String password;
     public UserEntity toUser(){
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(this, userEntity);

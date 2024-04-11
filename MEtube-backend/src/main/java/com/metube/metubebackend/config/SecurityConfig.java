@@ -29,10 +29,9 @@ public class SecurityConfig{
         return http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(registry->{
-            registry.requestMatchers("/register/user").permitAll();
-            registry.requestMatchers("/users").hasRole("ADMIN");
-            registry.requestMatchers("/user/**").hasRole("ADMIN");
-            registry.requestMatchers("/swagger-ui/**").hasRole("USER");
+            registry.requestMatchers("/register/user").permitAll(); // register is open for anyone
+            registry.requestMatchers("/users").hasRole("ADMIN"); // get all users is restricted to admin
+            registry.requestMatchers("/swagger-ui/**").hasRole("USER"); // DEV ONLY! Swagger allowed to anyone
             registry.anyRequest().authenticated();
         }).formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .build();

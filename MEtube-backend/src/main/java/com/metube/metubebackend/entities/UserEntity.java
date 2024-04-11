@@ -16,5 +16,5 @@ public class UserEntity {
     private String id;
     private String password;
     private String username;
-    private String roles;
+    private String roles = "USER";
 }
