@@ -1,8 +1,10 @@
 package com.metube.metubebackend.controllers;
 
 import com.metube.metubebackend.controllers.contracts.UserCreateRequest;
-import com.metube.metubebackend.entities.User;
+import com.metube.metubebackend.controllers.contracts.UserPasswordResetRequest;
+import com.metube.metubebackend.entities.UserEntity;
 import com.metube.metubebackend.service.UserService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,22 +16,27 @@ public class UserController {
     @Autowired
     UserService userService;
     @GetMapping("/users")
-    public List<User> getAllUsers(){
+    public List<UserEntity> getAllUsers(){
         return userService.getUsers();
     }
 
-    @PostMapping("/users")
-    public User createUser(@RequestBody UserCreateRequest user){
+    @GetMapping("/user/id")
+    public String getUserId() throws BadRequestException {
+        return userService.getUserId();
+    }
+
+    @PostMapping("/register/user")
+    public UserEntity createUser(@RequestBody UserCreateRequest user){
         return userService.createUser(user);
     }
 
-    @PutMapping("/users/{id}")
-    public User updateUserPassword(@PathVariable String id, @RequestBody String password){
-        return userService.updateUserPassword(id, password);
+    @PutMapping("/user/{id}")
+    public UserEntity updateUserPassword(@PathVariable String id, @RequestBody UserPasswordResetRequest user) throws BadRequestException {
+        return userService.updateUserPassword(id, user);
     }
 
-    @DeleteMapping("/users/{id}")
-    public void deleteUser(@PathVariable String id){
+    @DeleteMapping("/user/{id}")
+    public void deleteUser(@PathVariable String id) throws BadRequestException {
         userService.deleteUser(id);
     }
 

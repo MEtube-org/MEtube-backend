@@ -1,7 +1,8 @@
 package com.metube.metubebackend.entities;
 
-import org.springframework.data.annotation.Id;
 import lombok.*;
+import nonapi.io.github.classgraph.json.Id;
+import org.bson.codecs.pojo.annotations.BsonId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
@@ -9,11 +10,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document(collection="user")
-public class User {
+@Document(collection="server")
+public class Server {
 
     @Id
     private String id;
-    private String password; // Will be stored encrypted;
-    private String username;
+    private String userId;
+    private String ip;
+    private String port;
 }
