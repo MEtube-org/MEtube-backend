@@ -1,0 +1,66 @@
+name: Release Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version type: MAJOR, MINOR, or PATCH'
+        required: true
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Read VERSION file
+        id: read_version
+        run: echo ::set-output name=version::$(cat VERSION)
+      
+      - name: Increment version
+        id: increment_version
+        run: |
+          current_version=$(echo ${{ steps.read_version.outputs.version }})
+          IFS='.' read -r -a version_parts <<< "$current_version"
+          case "${{ github.event.inputs.version_type }}" in
+            "MAJOR")
+              new_version="${version_parts[0]}.$((${version_parts[1]} + 1)).${version_parts[2]}"
+              ;;
+            "MINOR")
+              new_version="${version_parts[0]}.${version_parts[1]}.$((${version_parts[2]} + 1))"
+              ;;
+            "PATCH")
+              new_version="$((${version_parts[0]} + 1)).${version_parts[1]}.${version_parts[2]}"
+              ;;
+            *)
+              echo "Invalid version type specified"
+              exit 1
+              ;;
+          esac
+          echo "::set-output name=new_version::$new_version"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.increment_version.outputs.new_version }}
+          release_name: Release ${{ steps.increment_version.outputs.new_version }}
+          body: |
+            Release ${{ steps.increment_version.outputs.new_version }}
+          draft: false
+          prerelease: false
+
+      - name: Update VERSION file
+        run: echo "${{ steps.increment_version.outputs.new_version }}" > VERSION
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add VERSION
+          git commit -m "Bump version to ${{ steps.increment_version.outputs.new_version }}"
+          git push origin main
