@@ -26,13 +26,14 @@ jobs:
           IFS='.' read -r -a version_parts <<< "$current_version"
           case "${{ github.event.inputs.version_type }}" in
             "MAJOR")
-              new_version="${version_parts[0]}.$((${version_parts[1]} + 1)).${version_parts[2]}"
+              new_version="$((${version_parts[0]} + 1)).${version_parts[1]}.${version_parts[2]}"
               ;;
             "MINOR")
-              new_version="${version_parts[0]}.${version_parts[1]}.$((${version_parts[2]} + 1))"
+              new_version="${version_parts[0]}.$((${version_parts[1]} + 1)).${version_parts[2]}"
+              
               ;;
             "PATCH")
-              new_version="$((${version_parts[0]} + 1)).${version_parts[1]}.${version_parts[2]}"
+              new_version="${version_parts[0]}.${version_parts[1]}.$((${version_parts[2]} + 1))"
               ;;
             *)
               echo "Invalid version type specified"
@@ -64,3 +65,5 @@ jobs:
           git add VERSION
           git commit -m "Bump version to ${{ steps.increment_version.outputs.new_version }}"
           git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
