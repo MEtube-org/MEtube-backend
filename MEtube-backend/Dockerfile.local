@@ -1,7 +1,0 @@
-FROM openjdk:17
-
-COPY ./build/libs/*-SNAPSHOT.jar /build/libs/MEtube.jar
-
-WORKDIR /build/libs/
-
-CMD ["java", "-jar","/build/libs/MEtube.jar"]
