@@ -32,6 +32,7 @@ public class SecurityConfig{
             registry.requestMatchers("/register/user").permitAll(); // register is open for anyone
             registry.requestMatchers("/users").hasRole("ADMIN"); // get all users is restricted to admin
             registry.requestMatchers("/swagger-ui/**").hasRole("USER"); // DEV ONLY! Swagger allowed to anyone
+            registry.requestMatchers("/servers/").hasRole("ADMIN");
             registry.anyRequest().authenticated();
         }).formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .build();
