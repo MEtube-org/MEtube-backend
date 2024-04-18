@@ -8,7 +8,7 @@ volumes:
 
 services:
   api:
-    image: ghcr.io/metube-org/metube-backend:nightly
+    image: ghcr.io/metube-org/metube-backend:main
     ports:
       - 32500:32500
     environment:
